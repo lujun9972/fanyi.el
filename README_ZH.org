@@ -25,7 +25,7 @@
 ** 手动安装
 1. 克隆仓库到本地：
    #+BEGIN_SRC shell
-   git clone https://github.com/yourname/fanyi ~/.emacs.d/fanyi
+   git clone https://github.com/lujun9972/fanyi ~/.emacs.d/fanyi
    #+END_SRC
 
 2. 添加加载路径：
