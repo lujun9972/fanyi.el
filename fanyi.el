@@ -16,6 +16,7 @@
 
 (require 's)
 (require 'llm)
+(require 'llm-openai)
 
 (defgroup fanyi nil
   "AI-powered translation toolkit."
