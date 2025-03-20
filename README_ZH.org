@@ -1,0 +1,111 @@
+#+TITLE: Fanyi - 基于大语言模型的 Emacs 智能翻译工具包
+#+AUTHOR: lujun9972
+#+TAGS: fanyi.el
+#+DATE: [2025-03-20 Thu 19:47]
+#+LANGUAGE:  zh-CN
+#+STARTUP:  inlineimages
+#+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
+
+
+* 简介
+** 功能特性
+- 核心翻译引擎：
+  - 两步翻译流程（初翻 + 专家优化）
+  - 支持 GLM/OpenAI 兼容的 API 提供商
+  - 可调参数：温度值、源/目标语言、地区变体
+- Org 模式集成：
+  - 结构保留式文档翻译
+  - 支持元素类型：
+    #+BEGIN_EXAMPLE
+    标题    注释块    纯文本
+    脚注    内联任务
+    #+END_EXAMPLE
+
+* 安装
+** 手动安装
+1. 克隆仓库到本地：
+   #+BEGIN_SRC shell
+   git clone https://github.com/yourname/fanyi ~/.emacs.d/fanyi
+   #+END_SRC
+
+2. 添加加载路径：
+   #+BEGIN_SRC elisp
+   ;; init.el 配置
+   (add-to-list 'load-path "~/.emacs.d/fanyi")
+   (require 'fanyi)
+   #+END_SRC
+
+** 依赖管理
+需提前安装以下包：
+- [[https://github.com/magnars/s.el][s.el]] (字符串处理)
+- [[https://github.com/ethanlliao/llm][llm.el]] (大模型交互)
+
+* 配置
+** API 密钥设置
+#+BEGIN_SRC elisp
+(setq fanyi-key "你的API密钥")  ; 必填项
+(setq fanyi-baseurl "https://open.bigmodel.cn/api/paas/v4")
+(setq fanyi-model "glm-4")      ; 默认模型
+(setq fanyi-temperature 0.4)    ; 创造性系数 (0.0~1.0)
+#+END_SRC
+
+** Org 模式集成
+#+BEGIN_SRC elisp
+(with-eval-after-load 'org
+  (require 'fanyi-org))
+#+END_SRC
+
+* 使用指南
+** 基础翻译
+| 命令                 | 功能描述         | 推荐键绑定 |
+|----------------------|----------------|------------|
+| fanyi-content        | 翻译选中文本     | C-c t t    |
+
+** Org 文档翻译
+*** 缓冲区翻译
+#+BEGIN_SRC elisp
+M-x fanyi-org-current-buffer
+#+END_SRC
+
+*** 文件翻译（生成 .translated 副本）
+#+BEGIN_SRC elisp
+M-x fanyi-org-file
+#+END_SRC
+
+* 示例演示
+** 文本翻译
+#+BEGIN_SRC elisp
+(fanyi-content "The quick brown fox jumps over the lazy dog.")
+;; => "敏捷的棕色狐狸跳过懒惰的狗"
+#+END_SRC
+
+** 文档翻译
+*** 输入文件 (document.org)
+#+BEGIN_SRC org
+  ,* Meeting Notes
+  - Review Q2 results [[2024-07-01 Mon]]
+  - Discuss <<project timeline>>
+#+END_SRC
+
+*** 输出文件 (document.org.translated)
+#+BEGIN_SRC org
+  ,* 会议记录
+  - 回顾第二季度结果 [[2024-07-01 周一]]
+  - 讨论 <<项目时间表>>
+#+END_SRC
+
+* 开发相关
+** 项目结构
+#+BEGIN_EXAMPLE
+fanyi/
+├── fanyi.el         ; 核心翻译逻辑
+├── fanyi-org.el     ; Org 模式集成
+└── README_ZH.org       ; 本文档
+#+END_EXAMPLE
+
+* 注意事项
+- 翻译质量取决于大模型性能，复杂文本建议人工校对
+- 大段翻译可能消耗较多 API 额度，请合理使用
+
+* 授权协议
+本项目采用 [[https://opensource.org/licenses/MIT][MIT 许可证]]，可自由用于个人和商业用途。
